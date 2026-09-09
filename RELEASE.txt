@@ -24,8 +24,7 @@ NEW FUNCTIONALITY
   looked for relative to the including file, a bracketed name in
   $CPPPATH; note compilers use a separate search path for the bracketed
   form (--embed-dir=), so those directories need to be added to $CPPPATH
-  as well. The resource itself is not scanned for dependencies of its
-  own, since its contents are embedded as data, not preprocessed.
+  as well.
 
 DEPRECATED FUNCTIONALITY
 ------------------------

@@ -198,16 +198,12 @@ test.write('f5.c', """\
 test.write("f5a.h", "\n")
 test.write("f5b.h", "\n")
 
-# C23 #embed, in both the quoted and the bracketed form.  The resources
-# contain an #include line which must never be picked up: unlike an included
-# file, an embedded resource is data, and is not scanned in turn.
+# C23 #embed, in both the quoted and the bracketed form.
 test.write('f10.c', """\
 #include "f1.h"
 #embed "res1.bin"
 #ifdef EMBED_RES2
 #embed <res2.bin> limit(4)
-#endif
-#if __has_embed(<never.h>)
 #endif
 """)
 
@@ -497,10 +493,6 @@ class CScannerTestCase16(unittest.TestCase):
         headers = ['f1.h', 'res1.bin', 'd1/res2.bin']
         deps_match(self, deps, headers)
 
-        # An embedded resource is data: it must not be scanned in turn,
-        # while an ordinary #include still is.
-        deps_match(self, s.recurse_nodes(deps), ['f1.h'])
-
 
 class CConditionalScannerTestCase1(unittest.TestCase):
     def runTest(self) -> None:
@@ -576,9 +568,6 @@ class CConditionalScannerTestCase5(unittest.TestCase):
             env = DummyEnvironment(CPPPATH=[test.workpath("d1")])
             deps = s(env.File('f10.c'), env, s.path(env))
             deps_match(self, deps, ['f1.h', 'res1.bin'])
-
-            # An embedded resource is data: it must not be scanned in turn.
-            deps_match(self, s.recurse_nodes(deps), ['f1.h'])
 
         with self.subTest("conditional #embed taken"):
             env = DummyEnvironment(

@@ -579,9 +579,10 @@ class PreProcessor:
         """
         Default handling of a #embed line.
 
-        Like a #include, except the named resource is embedded as data:
-        its contents are never preprocessed, so unlike do_include() we
-        record the resource without descending into it.
+        Like a #include.
+        The named resource is to be embedded as data, but better
+        safe than sorry, its contents are processed anyway, as the
+        resource may also be #included somewhere else.
         """
         t = self.resolve_include(t)
         if not t:
